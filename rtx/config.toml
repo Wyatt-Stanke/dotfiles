@@ -1,0 +1,3 @@
+[settings]
+jobs = 12
+missing_runtime_behavior = 'autoinstall'

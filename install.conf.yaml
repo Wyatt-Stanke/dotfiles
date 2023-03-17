@@ -1,0 +1,26 @@
+- clean: ['~']
+- defaults:
+    link:
+      relink: true
+- shell:
+  - sudo spctl --global-disable
+  - xcode-select --install || true
+  - 
+    command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    stdin: true
+    stdout: true
+  - brew bundle
+  - 
+    command: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly -y
+    stdin: true
+    stdout: true
+  - cargo install topgrade
+  - echo 'eval "$(starship init zsh)"' >>~/.zshrc
+  - rtx install
+  - fig doctor
+  - topgrade -y
+  - fd -Hg '.*icloud' ./Documents | sed 's|\.\([^/]*\)\.icloud$|\1|g' | while read fn; do brctl download "$fn"; done
+  - sudo spctl --global-enable
+- link:
+  ~/.config/rtx/config.toml: rtx
+  ~/.tool-versions: rtx
